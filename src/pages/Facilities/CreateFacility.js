@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -18,10 +18,28 @@ import 'toastr/build/toastr.min.css'
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createFacility } from "../../store/actions";
+import GenricForm from "../../components/Form/GenricForm/GenricForm";
 
 const CreateFacility = () => {
-  const dispatch =useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [formModule, setFormModule] = useState();
+
+  useEffect(() => {
+    const createFacilityForm = {
+      type: 'create',
+      backToList: '/facilities',
+      form: {
+        facilityName: { fieldName: 'Facility Name', value: '', type: 'text', required: true },
+        image: { fieldName: 'ChooseMedia', value: '', type: 'select', required: true }
+      },
+    }
+
+    setFormModule(createFacilityForm)
+  }, [])
+
+
   const [breadcrumbItems] = useState([
     { title: "KingMajesty", link: "/" },
     { title: "Create Facilities", link: "#" },
@@ -99,7 +117,7 @@ const CreateFacility = () => {
     const file = event.target.files[0];
     setFormData((prevData) => ({ ...prevData, file }));
   };
-  
+
   const handleNavigate = () => {
     navigate("/facilities");
   };
@@ -111,13 +129,15 @@ const CreateFacility = () => {
           title="Create Facilities"
           breadcrumbItems={breadcrumbItems}
         />
-        <Form>
+
+        <GenricForm  formModule={formModule} />
+         {/* <Form>
           <Card>
             <CardBody>
-            <Row  className="align-items-center  d-flex mb-3 rounded bg-subbar border border-info">              
+              <Row className="align-items-center  d-flex mb-3 rounded bg-subbar border border-info">
                 <Col
-                   xs="12"
-                   md="12"
+                  xs="12"
+                  md="12"
                   className="mb-2 d-md-flex justify-content-md-start"
                 >
                   <Button
@@ -130,7 +150,7 @@ const CreateFacility = () => {
                     Back to List
                   </Button>
                 </Col>
-     
+
               </Row>
               <AvForm
                 id="validationCustomForm"
@@ -166,7 +186,7 @@ const CreateFacility = () => {
               </AvForm>
             </CardBody>
           </Card>
-        </Form>
+        </Form>  */}
       </Container>
     </div>
   );
