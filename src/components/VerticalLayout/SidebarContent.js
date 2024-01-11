@@ -2,37 +2,32 @@ import React, { useEffect, useState } from "react";
 import MetisMenu from "metismenujs";
 import { Link } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import {
   changeLayout,
   changeLayoutWidth,
   changeSidebarTheme,
   changeSidebarType,
-  changePreloader,
-  setSidebarMenus
+  changePreloader
 } from "../../store/actions";
 import withRouter from "../Common/withRouter";
 import getSidebarMenus from "../../services/api/authentication/sidebarMenuApi";
 
-
-const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSidebarTheme, changeSidebarType, changeLayoutWidth, changePreloader, userID }) => {
+const SidebarContent = ({ t, router, type, changeLayout, changeSidebarTheme, changeSidebarType, changeLayoutWidth, changePreloader, userID }) => {
   const [pathName, setPathName] = useState(router.location.pathname);
-  console.log("sidebarMenus in SidebarContent function inside:  ",sidebarMenus);
-  const [sidebarMenuss, setSidebarMenuss] = useState([]);
-  const dispatch = useDispatch();
-  
+  const [sidebarMenus, setSidebarMenus] = useState([]);
+
   const token = localStorage.getItem('token');
   
   useEffect(() => {
     const fetchSidebarMenus = async () => {
       try {
-        const res = await getSidebarMenus(token , dispatch);
+        const data = await getSidebarMenus(token);
         // const token = localStorage.getItem('token');
         // const data = await response.json();
-        if (res.success) {
-          console.log(res);
-          // dispatch(setSidebarMenus(res.sidebarMenus));
-          // setSidebarMenuss(data.sidebarMenuss);
+        if (data.success) {
+          console.log(data);
+          setSidebarMenus(data.sidebarMenus);
         }
       } catch (error) {
         console.error("Error fetching sidebar menus:", error);
@@ -43,7 +38,7 @@ const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSid
 
   useEffect(() => {
     new MetisMenu("#side-menu");
-  }, [sidebarMenuss]); // Initialize MetisMenu whenever sidebarMenus change
+  }, [sidebarMenus]); // Initialize MetisMenu whenever sidebarMenus change
 
   useEffect(() => {
     if (router.location.pathname !== pathName) {
@@ -59,7 +54,7 @@ const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSid
 
         <li className="menu-title">{t('Menu')}</li>
 
-           {sidebarMenuss.map((menu, index) => (
+          {sidebarMenus.map((menu, index) => (
             
             <li key={index}>
               {menu.subMenus && menu.subMenus.length > 0 ? (
@@ -84,7 +79,7 @@ const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSid
                 </ul>
               )}
             </li>
-          ))} 
+          ))}
 
 
             <li>
@@ -112,8 +107,8 @@ const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSid
 
 
 const mapStateToProps = (state) => {
-  console.log("sidebarContent component: ",state);
-  return { ...state.Layout, userID: state.Login.userID , sidebarMenus: state.sidebar.sidebarMenus};
+  console.log(state);
+  return { ...state.Layout, userID: state.Login.userID , sidebarMenus: state.sidebarMenus};
 };
 
 
@@ -124,6 +119,137 @@ export default withRouter(connect(mapStateToProps, {
   changeLayoutWidth,
   changePreloader
 })(withTranslation()(SidebarContent)));
+
+
+
+
+
+// import React, { useEffect, useState } from "react";
+// import MetisMenu from "metismenujs";
+// import { Link } from "react-router-dom";
+// import { withTranslation } from 'react-i18next';
+// import { connect, useDispatch } from "react-redux";
+// import {
+//   changeLayout,
+//   changeLayoutWidth,
+//   changeSidebarTheme,
+//   changeSidebarType,
+//   changePreloader,
+//   setSidebarMenus
+// } from "../../store/actions";
+// import withRouter from "../Common/withRouter";
+// import getSidebarMenus from "../../services/api/authentication/sidebarMenuApi";
+
+
+// const SidebarContent = ({ t, router, sidebarMenus, type, changeLayout, changeSidebarTheme, changeSidebarType, changeLayoutWidth, changePreloader, userID }) => {
+//   const [pathName, setPathName] = useState(router.location.pathname);
+//   console.log("sidebarMenus in SidebarContent function inside:  ",sidebarMenus);
+//   const [sidebarMenuss, setSidebarMenuss] = useState([]);
+//   const dispatch = useDispatch();
+  
+//   const token = localStorage.getItem('token');
+  
+//   useEffect(() => {
+//     const fetchSidebarMenus = async () => {
+//       try {
+//         const res = await getSidebarMenus(token , dispatch);
+//         // const token = localStorage.getItem('token');
+//         // const data = await response.json();
+//         if (res.success) {
+//           console.log(res);
+//           // dispatch(setSidebarMenus(res.sidebarMenus));
+//           // setSidebarMenuss(data.sidebarMenuss);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching sidebar menus:", error);
+//       }
+//     };
+//     fetchSidebarMenus();
+//   }, [token]);
+
+//   useEffect(() => {
+//     new MetisMenu("#side-menu");
+//   }, [sidebarMenuss]); // Initialize MetisMenu whenever sidebarMenus change
+
+//   useEffect(() => {
+//     if (router.location.pathname !== pathName) {
+//       setPathName(router.location.pathname);
+//       window.scrollTo({ top: 0, behavior: 'smooth' });
+//     }
+//   }, [router.location.pathname, pathName]);
+
+//   return (
+//     <>
+//       <div id="sidebar-menu">
+//         <ul className="metismenu list-unstyled" id="side-menu">
+
+//         <li className="menu-title">{t('Menu')}</li>
+
+//            {sidebarMenuss.map((menu, index) => (
+            
+//             <li key={index}>
+//               {menu.subMenus && menu.subMenus.length > 0 ? (
+//                 <Link  to={`/${menu.route}`} className="has-arrow waves-effect">
+//                   {menu.menu && <i className={`ri-${menu.icon}-fill`}></i>}
+//                   <span className="ms-1">{t(menu.menu)}</span>
+//                 </Link>
+//               ) : (
+//                 <Link  to={`/${menu.route}`} className="waves-effect">
+//                   {menu.menu && <i className={`ri-${menu.icon}-fill`}></i>}
+//                   <span className="ms-1">{t(menu.menu)}</span>
+//                 </Link>
+//               )}
+
+//               {menu.subMenus && menu.subMenus.length > 0 && (
+//                 <ul className="sub-menu">
+//                   {menu.subMenus.map((subMenu, subIndex) => (
+//                     <li key={subIndex}>
+//                       <Link to={subMenu.link}>{t(subMenu.menu)}</Link>
+//                     </li>
+//                   ))}
+//                 </ul>
+//               )}
+//             </li>
+//           ))} 
+
+
+//             <li>
+//               <Link to="/#" className="waves-effect">
+//                 <i className="ri-eraser-fill"></i>
+//                 <span className="badge rounded-pill bg-danger float-end">6</span>
+//                 <span className="ms-1">{t('Forms')}</span>
+//               </Link>
+//               <ul className="sub-menu">
+//                 <li><Link to="/form-elements">{t('Form Elements')}</Link></li>
+//                 <li><Link to="/form-validation">{t('Form Validation')}</Link></li>
+//                 <li><Link to="/form-advanced">{t('Form Advanced Plugins')}</Link></li>
+//                 <li><Link to="/form-editors">{t('Form Editors')}</Link></li>
+//                 <li><Link to="/form-file-upload">{t('Form File Upload')}</Link></li>
+//                 <li><Link to="/form-xeditable">{t('Form X-editable')}</Link></li>
+//                 <li><Link to="/form-wizard">{t('Form Wizard')}</Link></li>
+//                 <li><Link to="/form-mask">{t('Form Mask')}</Link></li>
+//               </ul>
+//             </li>
+//         </ul>
+//       </div>
+//     </>
+//   );
+// };
+
+
+// const mapStateToProps = (state) => {
+//   console.log("sidebarContent component: ",state);
+//   return { ...state.Layout, userID: state.Login.userID , sidebarMenus: state.sidebar.sidebarMenus};
+// };
+
+
+// export default withRouter(connect(mapStateToProps, {
+//   changeLayout,
+//   changeSidebarTheme,
+//   changeSidebarType,
+//   changeLayoutWidth,
+//   changePreloader
+// })(withTranslation()(SidebarContent)));
 
 
 
