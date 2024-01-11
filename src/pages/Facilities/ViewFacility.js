@@ -146,8 +146,8 @@ const ViewFacility = () => {
   );
 
   const breadcrumbItems = [
-    { title: "Ecommerce", link: "/" },
-    { title: "Orders", link: "#" },
+    { title: "Facility", link: "/" },
+    { title: "Facilities", link: "#" },
   ];
 
   const navigate = useNavigate();
@@ -171,7 +171,7 @@ const ViewFacility = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumbs title="Orders" breadcrumbItems={breadcrumbItems} />
+          <Breadcrumbs title="Facilities" breadcrumbItems={breadcrumbItems} />
           <Card>
             <CardBody>
               {/* <Row  className="align-items-center  d-flex mb-3 rounded bg-subbar border border-info">

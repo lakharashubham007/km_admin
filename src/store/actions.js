@@ -7,3 +7,5 @@ export * from './auth/forgetpwd/actions';
 
 // Facility module
 export * from './facility/actions';
+//sidebar menu
+export * from './sidebarmenu/actions';

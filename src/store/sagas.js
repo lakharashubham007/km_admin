@@ -6,9 +6,11 @@ import loginSaga from './auth/login/saga';
 import forgetSaga from './auth/forgetpwd/saga';
 import LayoutSaga from './layout/saga';
 import facilitySaga from './facility/saga';
+import sidebarSaga from './sidebarmenu/saga'
 
 export default function* rootSaga() {
     yield all([
+
         //public
         accountSaga(),
         loginSaga(),
@@ -16,6 +18,8 @@ export default function* rootSaga() {
         LayoutSaga(),
 
         // Facility
-        facilitySaga()
+        facilitySaga(),
+        sidebarSaga()
+
     ])
 }
