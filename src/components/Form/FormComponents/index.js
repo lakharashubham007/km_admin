@@ -13,3 +13,6 @@ export { default as WeekInput } from './WeekInput';
 export { default as TimeInput } from './TimeInput';
 export { default as ColorInput } from './ColorInput';
 export { default as SelectInput } from './SelectInput';
+export { default as SelectorInput } from './SelectorInput';
+export { default as ChooseFileInput } from './ChooseFileInput';
+export { default as CkEditor } from './CkEditor';

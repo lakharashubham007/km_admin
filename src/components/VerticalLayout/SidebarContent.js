@@ -1,39 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MetisMenu from "metismenujs";
 import { Link } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   changeLayout,
   changeLayoutWidth,
   changeSidebarTheme,
   changeSidebarType,
-  changePreloader
+  changePreloader,
+  getSidebarMenus
 } from "../../store/actions";
 import withRouter from "../Common/withRouter";
-import getSidebarMenus from "../../services/api/authentication/sidebarMenuApi";
+
 
 const SidebarContent = ({ t, router, type, changeLayout, changeSidebarTheme, changeSidebarType, changeLayoutWidth, changePreloader, userID }) => {
-  const [pathName, setPathName] = useState(router.location.pathname);
-  const [sidebarMenus, setSidebarMenus] = useState([]);
+  const [pathName, setPathName] = useState(router.location.pathname);  
+  const dispatch = useDispatch();
+  // const {sidebarMenu: {sidebarMenus}, Login: {tokens}}  = useSelector((state) => state);
+  // const menus = useSelector((state) => state);
+  // console.log(sidebarMenus,tokens);
 
-  const token = localStorage.getItem('token');
+  const [sidebarMenus, token] = useSelector((state) => [
+    state.sidebarMenu.sidebarMenus,
+    state.Login.tokens.token,
+  ]);
   
+
   useEffect(() => {
-    const fetchSidebarMenus = async () => {
-      try {
-        const data = await getSidebarMenus(token);
-        // const token = localStorage.getItem('token');
-        // const data = await response.json();
-        if (data.success) {
-          console.log(data);
-          setSidebarMenus(data.sidebarMenus);
-        }
-      } catch (error) {
-        console.error("Error fetching sidebar menus:", error);
-      }
-    };
-    fetchSidebarMenus();
+    if(token){      
+      dispatch(getSidebarMenus());       
+    }    
   }, [token]);
 
   useEffect(() => {
@@ -54,7 +51,7 @@ const SidebarContent = ({ t, router, type, changeLayout, changeSidebarTheme, cha
 
         <li className="menu-title">{t('Menu')}</li>
 
-          {sidebarMenus.map((menu, index) => (
+          {sidebarMenus && sidebarMenus.map((menu, index) => (
             
             <li key={index}>
               {menu.subMenus && menu.subMenus.length > 0 ? (
@@ -106,9 +103,8 @@ const SidebarContent = ({ t, router, type, changeLayout, changeSidebarTheme, cha
 };
 
 
-const mapStateToProps = (state) => {
-  console.log(state);
-  return { ...state.Layout, userID: state.Login.userID , sidebarMenus: state.sidebarMenus};
+const mapStateToProps = (state) => {  
+  return { ...state.Layout, userID: state.Login.userID };
 };
 
 

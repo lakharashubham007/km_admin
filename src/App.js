@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import { connect } from "react-redux";
-
+import { connect, useDispatch } from "react-redux";
 // Import Routes
 import { authProtectedRoutes, publicRoutes } from "./routes";
 
 // layouts
 import VerticalLayout from "./components/VerticalLayout/";
 import HorizontalLayout from "./components/HorizontalLayout/";
-
 import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
@@ -17,6 +15,7 @@ import "./assets/scss/theme.scss";
 //Fake backend
 // import fakeBackend from './helpers/AuthType/fakeBackend';
 import AppRoute from "./routes/route";
+import { checkLogin } from "./store/actions";
 
 
 
@@ -24,6 +23,7 @@ import AppRoute from "./routes/route";
 // fakeBackend();
 
 const App = ({ layout }) => {
+  const dispatch = useDispatch();
   /**
    * Returns the layout
    */
@@ -40,6 +40,10 @@ const App = ({ layout }) => {
     }
     return layoutCls;
   };
+
+  useEffect(()=>{
+    dispatch(checkLogin());
+  }, []);
 
   const Layout = getLayout();
 
