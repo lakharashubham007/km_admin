@@ -9,8 +9,7 @@ import { setHotelsDropdownOptions } from './actions';
 function* fetchHotelDropdownOption() {
     try {
       // const token = JSON.parse(localStorage.getItem('token'));    
-      const data = yield call(fetchHotelsDropdownListApi);   
-      console.log(data)
+      const data = yield call(fetchHotelsDropdownListApi);
       if (data.success) {      
         yield put(setHotelsDropdownOptions(data));
       }

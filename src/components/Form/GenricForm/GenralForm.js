@@ -1,12 +1,12 @@
 /* eslint-disable default-case */
 import React from "react";
 import { Button, Col, Row } from "reactstrap";
-
 import TextInput from "../FormComponent/TextInput";
 import SelectInput from "../FormComponent/SelectInput";
-import { useNavigate } from "react-router-dom";
 import ChooseFileInput from "../FormComponent/ChooseFileInput";
-
+import CkEditor from "../FormComponent/CkEditor";
+import NumberInput  from "../FormComponent/NumberInput";
+import { useNavigate } from "react-router-dom";
 
 const GenralForm = ({ formFields, onChange }) => {
   const navigate = useNavigate();
@@ -80,11 +80,33 @@ const GenralForm = ({ formFields, onChange }) => {
                       errorMessage={fieldConfig.errorMessage}
                       isMulti={fieldConfig.isMulti}
                       imageViewer={fieldConfig.imageViewer}
-                      multiple={fieldConfig.multiple}                      
+                      multiple={fieldConfig.multiple}
                     />
                   </Col>
                 );
-              
+              case "editor":
+                return (
+                  <Col lg="12">
+                    <CkEditor
+                      label={fieldConfig.label}
+                      fieldName={fieldConfig.fieldName}
+                      onChange={handleFieldChange}
+                    />
+                  </Col>
+                );
+              case "number":
+                return (
+                  <Col key={fieldConfig.fieldName} lg="6">
+                    <NumberInput
+                      label={fieldConfig.label}
+                      fieldName={fieldConfig.fieldName}
+                      onChange={handleFieldChange}
+                      errorMessage={fieldConfig.errorMessage}
+                      placeholder={fieldConfig.placeholder}
+                      value={fieldConfig.value}
+                    />
+                  </Col>
+                );
             }
           })}
       </Row>

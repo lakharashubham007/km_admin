@@ -27,8 +27,16 @@ const CreateRoom = () => {
     hotel: "",
     category: "",
     facilities: [],
-    gallary: "",
+    deals: [],
+    gallery: [],
     thumbnail: "",
+    description: "",
+    min_people: "",
+    max_adults: "",
+    base_Price: "",
+    todays_price: "",
+    max_children: "",
+    rooms_stock: "",
   });
   console.log(formData);
 
@@ -47,11 +55,11 @@ const CreateRoom = () => {
     dispatch(getDeals());
   }, []);
 
-  const [ 
+  const [
     hotelsListOption,
-    roomCategoryOptions, 
+    roomCategoryOptions,
     facilitiesOptions,
-    dealsOptions
+    dealsOptions,
   ] = [
     hotelDropdownOptions?.map((hotel) => ({
       value: hotel.name,
@@ -92,6 +100,54 @@ const CreateRoom = () => {
         options: roomCategoryOptions,
       },
       {
+        fieldName: "min_people",
+        label: "Min People",
+        type: "number",
+        errorMessage: "Enter Minimum People",
+        placeholder: "Enter Minimum Number of People in Room",
+        value: "",
+      },
+      {
+        fieldName: "max_adults",
+        label: "Max Adults",
+        type: "number",
+        errorMessage: "Enter Max Adults",
+        placeholder: "Enter Maximum Number of Adults in Room",
+        value: "",
+      },
+      {
+        fieldName: "base_Price",
+        label: "Base Price",
+        type: "number",
+        errorMessage: "Enter Base Price",
+        placeholder: "Enter Base Price",
+        value: "",
+      },
+      {
+        fieldName: "todays_price",
+        label: "Todays Price",
+        type: "number",
+        errorMessage: "Enter Todays Price",
+        placeholder: "Enter Todays Price",
+        value: "",
+      },
+      {
+        fieldName: "max_children",
+        label: "Max Children",
+        type: "number",
+        errorMessage: "Enter Max. Children in Room",
+        placeholder: "Enter Max. Children in Room",
+        value: "",
+      },
+      {
+        fieldName: "rooms_stock",
+        label: "Rooms Stock",
+        type: "number",
+        errorMessage: "Enter Number of Rooms Available in stock ",
+        placeholder: "Enter Number of Rooms in stock",
+        value: "",
+      },
+      {
         fieldName: "facilities",
         label: "Facilities",
         type: "select",
@@ -121,19 +177,55 @@ const CreateRoom = () => {
         imageViewer: true, // Enable image viewer for this field
       },
       {
-        fieldName: "gallary",
-        label: "Gallary",
+        fieldName: "gallery",
+        label: "Gallery",
         type: "file",
         errorMessage: "Select File",
         placeholder: "Select Image...",
-        value: formData.gallary,
+        value: formData.gallery,
         multiple: true,
         imageViewer: true, // Enable image viewer for this field
+      },
+      {
+        fieldName: "description",
+        label: "Description",
+        type: "editor",
       },
     ],
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async  () => {
+    const formDataToSend = new FormData();
+  
+    console.log(Object.entries(formData));
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'gallery') {
+        value.forEach((file, index) => {
+          formDataToSend.append(`gallery[${index}]`, file);
+        });
+      } else if (key === 'thumbnail') {
+        formDataToSend.append('thumbnail', value);
+      } else {
+        formDataToSend.append(key, value);
+      }
+    });
+
+    try {
+      const response = await fetch("http://localhost:8086/v1/rm/rooms/add-room", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        console.log("Room added successfully");
+      } else {
+        console.error("Failed to add room");
+      }
+    } catch (error) {
+      console.error("Error adding room:", error);
+    }
+  };
+
   return (
     <div className="page-content">
       <Container fluid={true}>
@@ -151,15 +243,3 @@ const CreateRoom = () => {
 };
 
 export default CreateRoom;
-
-//helping code for set options in dropdown by singel function
-
-// const hotelsListOption = hotelDropdownOptions?.map((hotel) => ({
-//   value: hotel.name,
-//   label: hotel.name,
-// }));
-
-// const roomCategoryOptions = categories?.map((category) => ({
-//   value: category.category,
-//   label: category.category,
-// }));
