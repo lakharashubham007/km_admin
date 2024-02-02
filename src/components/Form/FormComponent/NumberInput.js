@@ -18,7 +18,6 @@ const NumberInput = ({ label, fieldName, onChange, errorMessage, placeholder,val
       <Col md={10}>
         <Input 
          type="number" 
-         fieldName={fieldName}  
          onChange={handleInputChange} 
          value={value || defaultValue}
          placeholder={placeholder}

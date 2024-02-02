@@ -5,7 +5,7 @@ import TextInput from "../FormComponent/TextInput";
 import SelectInput from "../FormComponent/SelectInput";
 import ChooseFileInput from "../FormComponent/ChooseFileInput";
 import CkEditor from "../FormComponent/CkEditor";
-import NumberInput  from "../FormComponent/NumberInput";
+import NumberInput from "../FormComponent/NumberInput";
 import { useNavigate } from "react-router-dom";
 
 const GenralForm = ({ formFields, onChange }) => {
@@ -75,7 +75,6 @@ const GenralForm = ({ formFields, onChange }) => {
                     <ChooseFileInput
                       label={fieldConfig.label}
                       fieldName={fieldConfig.fieldName}
-                      options={fieldConfig.options}
                       onChange={handleFieldChange}
                       errorMessage={fieldConfig.errorMessage}
                       isMulti={fieldConfig.isMulti}
@@ -86,7 +85,7 @@ const GenralForm = ({ formFields, onChange }) => {
                 );
               case "editor":
                 return (
-                  <Col lg="12">
+                  <Col key={fieldConfig.fieldName} lg="12">
                     <CkEditor
                       label={fieldConfig.label}
                       fieldName={fieldConfig.fieldName}
@@ -107,6 +106,8 @@ const GenralForm = ({ formFields, onChange }) => {
                     />
                   </Col>
                 );
+              default:
+                return null; // Return null for the default case
             }
           })}
       </Row>

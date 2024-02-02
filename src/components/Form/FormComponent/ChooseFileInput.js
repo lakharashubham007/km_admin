@@ -28,8 +28,8 @@ const ChooseFileInput = ({
   };
 
   return (
-    <div>
-      <div className="d-flex flex-row mb-3">
+    <>
+      <Row className="d-flex flex-row mb-3">
         <Label className="custom-file-label col-md-2 col-form-label" for={id}>
           {label}
         </Label>
@@ -42,11 +42,12 @@ const ChooseFileInput = ({
             multiple={multiple}
           />
         </div>
-      </div>
-      <div style={{ marginLeft: "9rem" }}> 
-        {imageViewer && <ImageViewer  files={files} onRemoveFile={removeFile} />}
-      </div>
-    </div>
+      </Row>
+
+      <Row className="d-flex flex-row mb-3" >
+        {imageViewer && <ImageViewer files={files} onRemoveFile={removeFile}/>}
+      </Row>
+      </>
   );
 };
 

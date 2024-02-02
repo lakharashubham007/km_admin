@@ -8,6 +8,7 @@ import {
   getDeals,
   getFacilityList,
 } from "../../store/actions";
+import axios from "axios";
 
 const CreateRoom = () => {
   const dispatch = useDispatch();
@@ -78,6 +79,7 @@ const CreateRoom = () => {
       label: deals.name,
     })),
   ];
+
 
   const formFields = {
     backbutton: "/rooms",
@@ -194,38 +196,51 @@ const CreateRoom = () => {
     ],
   };
 
-  const handleSubmit = async  () => {
-    const formDataToSend = new FormData();
-  
-    console.log(Object.entries(formData));
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === 'gallery') {
-        value.forEach((file, index) => {
-          formDataToSend.append(`gallery[${index}]`, file);
-        });
-      } else if (key === 'thumbnail') {
-        formDataToSend.append('thumbnail', value);
-      } else {
-        formDataToSend.append(key, value);
-      }
-    });
 
+  const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:8086/v1/rm/rooms/add-room", {
-        method: "POST",
-        body: formDataToSend,
+      const formDataToSend = new FormData();
+
+  
+      // Append thumbnail
+      formDataToSend.append("thumbnail", formData.thumbnail);
+  
+      // Append gallery files
+      formData.gallery.forEach((file, index) => {
+        formDataToSend.append(`gallery`, file);
       });
 
-      if (response.ok) {
-        console.log("Room added successfully");
-      } else {
-        console.error("Failed to add room");
-      }
+      //other fields
+      formDataToSend.append("hotel", formData.hotel);
+      formDataToSend.append("category", formData.category);
+      formDataToSend.append("min_people", formData.min_people);
+      formDataToSend.append("max_adults", formData.max_adults);
+      formDataToSend.append("base_Price", formData.base_Price);
+      formDataToSend.append("todays_price", formData.todays_price);
+      formDataToSend.append("max_children", formData.max_children);
+      formDataToSend.append("rooms_stock", formData.rooms_stock);
+      formDataToSend.append("description", formData.description);
+      formDataToSend.append("facilities", JSON.stringify(formData.facilities)); // Assuming facilities is an array, stringify it
+      formDataToSend.append("deals", JSON.stringify(formData.deals));
+  
+      const response = await axios.post(
+        `http://localhost:8086/v1/rm/rooms/add-room`,
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            // Add any other headers if needed (e.g., Authorization)
+          },
+        }
+      );
+  
+      console.log("Room added successfully response", response);
     } catch (error) {
-      console.error("Error adding room:", error);
+      console.error("Error adding media:", error);
+      throw error;
     }
   };
-
+  
   return (
     <div className="page-content">
       <Container fluid={true}>

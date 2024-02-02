@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
-import { Col, FormFeedback, Label } from "reactstrap";
+import { Col, FormFeedback, Label, Row } from "reactstrap";
 
 const SelectInput = ({
   value,
@@ -32,7 +32,7 @@ const SelectInput = ({
   };
 
   return (
-    <div className="d-flex flex-row mb-3">
+    <Row className="mb-3">
       <Label className="col-md-2 col-form-label">{label}</Label>
       <Col className={`col-md-10`}>
         <Select
@@ -45,7 +45,7 @@ const SelectInput = ({
         />
         {inputError && <FormFeedback>{errorMessage}</FormFeedback>}
       </Col>
-    </div>
+    </Row>
   );
 };
 

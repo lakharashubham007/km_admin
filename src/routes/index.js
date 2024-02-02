@@ -69,8 +69,8 @@ const authProtectedRoutes = [
 	//Rooms	
 	{ path: "/rooms", exact: true, component: <ViewRooms /> },
 	// { path: "/facility/update", exact: true, component: <UpdateDeals /> },
-	{ path: "/room/create", exact: true, component: <CreateRoomForm /> },
-	{ path: "/room/creates", exact: true, component: <CreateRoom /> },
+	{ path: "/room/create", exact: true, component: <CreateRoom /> },
+	{ path: "/room/creates", exact: true, component: <CreateRoomForm /> },
 	
 
 	//Rooms	Category
