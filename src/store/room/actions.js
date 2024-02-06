@@ -1,5 +1,6 @@
 import {  
     FETCH_HOTEL_DROPDOWN_OPTIONS, 
+    SAVE_ROOM_DATA, 
     SET_HOTEL_DROPDOWN_OPTIONS,
  } from "./actionTypes";
 
@@ -16,3 +17,10 @@ export const fetchHotelDropdownOptions = () =>{
     })
  }
  
+export const saveRoom = (formdata) => {
+    console.log(formdata);
+    return({
+        type: SAVE_ROOM_DATA,
+        payload: formdata,
+    })
+}

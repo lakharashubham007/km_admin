@@ -1,10 +1,10 @@
 // saga.js
 import { call, put, all, takeEvery, fork } from 'redux-saga/effects';
-import { FETCH_HOTEL_DROPDOWN_OPTIONS, } from './actionTypes';
-import { fetchHotelsDropdownListApi } from '../../services/api/room/roomsApi';
+import { FETCH_HOTEL_DROPDOWN_OPTIONS, SAVE_ROOM_DATA, } from './actionTypes';
+import { addRoomApi, fetchHotelsDropdownListApi } from '../../services/api/room/roomsApi';
 import { setHotelsDropdownOptions } from './actions';
-
-
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 function* fetchHotelDropdownOption() {
     try {
@@ -18,9 +18,18 @@ function* fetchHotelDropdownOption() {
     }
   }
   
+  function* saveRoom({payload: formdata}) {
+    try{
+      const data = yield call(addRoomApi, formdata);
+      console.log(data);
+      // toastr.success(data.message);
+    }catch(error){
+        console.log("Error is here", error);
+    }
+  }
 
-export function* watchSaveRoomCategoryReq() {  
-//   yield takeEvery();
+export function* watchSaveRoomReq() {  
+  yield takeEvery(SAVE_ROOM_DATA, saveRoom);
 }
 
 export function* watchHotelDropdownOption() {  
@@ -28,6 +37,6 @@ export function* watchHotelDropdownOption() {
   }
 
 function* roomSaga() {
-  yield all([fork(watchSaveRoomCategoryReq), fork(watchHotelDropdownOption)] );
+  yield all([fork(watchSaveRoomReq), fork(watchHotelDropdownOption)] );
 }
 export default roomSaga;
