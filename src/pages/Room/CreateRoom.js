@@ -9,9 +9,7 @@ import {
   getFacilityList,
   saveRoom,
 } from "../../store/actions";
-import toastr from "toastr";
-import "toastr/build/toastr.min.css";
-import axios from "axios";
+import SubHeader from "../../components/Common/SubHeader";
 
 const CreateRoom = () => {
   const dispatch = useDispatch();
@@ -82,7 +80,6 @@ const CreateRoom = () => {
       label: deals.name,
     })),
   ];
-
 
   const formFields = {
     backbutton: "/rooms",
@@ -199,55 +196,16 @@ const CreateRoom = () => {
     ],
   };
 
- 
   const handleSubmit = async () => {
     dispatch(saveRoom(formData));
-  }
+  };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const formDataToSend = new FormData();
-  //     // Append thumbnail
-  //     formDataToSend.append("thumbnail", formData.thumbnail);
-  //     // Append gallery files
-  //     formData.gallery.forEach((file, index) => {
-  //       formDataToSend.append(`gallery`, file);
-  //     });
-  //     //other fields
-  //     formDataToSend.append("hotel", formData.hotel);
-  //     formDataToSend.append("category", formData.category);
-  //     formDataToSend.append("min_people", formData.min_people);
-  //     formDataToSend.append("max_adults", formData.max_adults);
-  //     formDataToSend.append("base_Price", formData.base_Price);
-  //     formDataToSend.append("todays_price", formData.todays_price);
-  //     formDataToSend.append("max_children", formData.max_children);
-  //     formDataToSend.append("rooms_stock", formData.rooms_stock);
-  //     formDataToSend.append("description", formData.description);
-  //     formDataToSend.append("facilities", JSON.stringify(formData.facilities)); // Assuming facilities is an array, stringify it
-  //     formDataToSend.append("deals", JSON.stringify(formData.deals));
-  
-  //     const response = await axios.post(
-  //       `http://localhost:8086/v1/rm/rooms/add-room`,
-  //       formDataToSend,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  
-  //     console.log("Room added successfully response", response);
-  //   } catch (error) {
-  //     console.error("Error adding media:", error);
-  //     throw error;
-  //   }
-  // };
-  
   return (
     <div className="page-content">
       <Container fluid={true}>
         <Card>
           <CardBody>
+            <SubHeader value="/rooms" />
             <GenralForm formFields={formFields} onChange={handleFormChange} />
             <Button color="primary" type="submit" onClick={handleSubmit}>
               Submit

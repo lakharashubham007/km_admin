@@ -1,13 +1,22 @@
-import React, { useState }  from 'react';
-import { Row, Col, Label, Input,FormFeedback } from 'reactstrap';
+import React, { useState } from "react";
+import { Row, Col, Label, Input, FormFeedback } from "reactstrap";
 
-const NumberInput = ({ label, fieldName, onChange, errorMessage, placeholder,value ,defaultValue}) => {
+const NumberInput = ({
+  label,
+  fieldName,
+  onChange,
+  errorMessage,
+  placeholder,
+  value,
+  defaultValue,
+  maxLength,
+}) => {
   const [inputError, setInputError] = useState(false);
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     const inputValue = e.target.value;
     onChange(fieldName, inputValue); // Pass the updated value back to the parent component
-    setInputError(inputValue.trim() === '');
+    setInputError(inputValue.trim() === "");
   };
 
   return (
@@ -16,14 +25,15 @@ const NumberInput = ({ label, fieldName, onChange, errorMessage, placeholder,val
         {label}
       </Label>
       <Col md={10}>
-        <Input 
-         type="number" 
-         onChange={handleInputChange} 
-         value={value || defaultValue}
-         placeholder={placeholder}
-         required
-         invalid={inputError}
-         />
+        <Input
+          type="number"
+          onChange={handleInputChange}
+          value={value || defaultValue}
+          placeholder={placeholder}
+          required
+          invalid={inputError}
+          maxLength={maxLength}
+        />
         {inputError && <FormFeedback>{errorMessage}</FormFeedback>}
       </Col>
     </Row>
@@ -31,4 +41,3 @@ const NumberInput = ({ label, fieldName, onChange, errorMessage, placeholder,val
 };
 
 export default NumberInput;
-

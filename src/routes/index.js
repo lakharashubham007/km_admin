@@ -41,6 +41,7 @@ import CreateRoomForm from "../pages/Room/CreateRoomForm";
 import ViewRoomCategory from "../pages/RoomCategory/ViewRoomCategory";
 import CreateRoomCategoryForm from "../pages/RoomCategory/CreateRoomCategoryForm";
 import CreateRoom from "../pages/Room/CreateRoom";
+import CreateHotels from "../pages/Hotels/CreateHotel";
 
 
 
@@ -58,6 +59,7 @@ const authProtectedRoutes = [
 	// { path: "/hotels", exact: true, component: <HotelCreateForm /> },
 	{ path: "/hotels", exact: true, component: <ViewHotels/> },
 	{ path: "/hotels/create", exact: true, component: <CreateHotel /> },
+	{ path: "/hotels/creates", exact: true, component: <CreateHotels /> },
 	{ path: "/hot", exact: true, component: <CreateNewHotel /> },
 
 	//Deals	

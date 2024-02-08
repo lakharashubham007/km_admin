@@ -10,6 +10,7 @@ const SelectInput = ({
   fieldName,
   errorMessage,
   isMulti,
+  placeholder,
 }) => {
   const [inputError, setInputError] = useState(false);
 
@@ -38,6 +39,7 @@ const SelectInput = ({
         <Select
           className={`${inputError ? "is-invalid" : ""}`}
           value={value}
+          placeholder={placeholder}
           onChange={handleSelectChange}
           options={options}
           classNamePrefix="select2-selection"

@@ -7,6 +7,8 @@ import ChooseFileInput from "../FormComponent/ChooseFileInput";
 import CkEditor from "../FormComponent/CkEditor";
 import NumberInput from "../FormComponent/NumberInput";
 import { useNavigate } from "react-router-dom";
+import AddressInput from "../FormComponent/AddressInput";
+import EmailInput from "../FormComponent/EmailInput";
 
 const GenralForm = ({ formFields, onChange }) => {
   const navigate = useNavigate();
@@ -20,24 +22,6 @@ const GenralForm = ({ formFields, onChange }) => {
 
   return (
     <div>
-      {/* subheader */}
-      <Row className="align-items-center  d-flex mb-3 rounded bg-subbar border border-info">
-        <Col
-          xs="12"
-          md="12"
-          className="mb-2 d-md-flex justify-content-md-start"
-        >
-          <Button
-            type="button"
-            color="warning"
-            className="btn-rounded me-2 mt-2 text-black"
-            onClick={handleNavigate}
-          >
-            <i className="mdi mdi-arrow-left me-1" />
-            Back to List
-          </Button>
-        </Col>
-      </Row>
       <Row className="mb-3">
         {formFields &&
           Object.keys(formFields.form).map((key) => {
@@ -66,6 +50,7 @@ const GenralForm = ({ formFields, onChange }) => {
                       onChange={handleFieldChange}
                       errorMessage={fieldConfig.errorMessage}
                       isMulti={fieldConfig.isMulti}
+                      placeholder={fieldConfig.placeholder}
                     />
                   </Col>
                 );
@@ -103,6 +88,33 @@ const GenralForm = ({ formFields, onChange }) => {
                       errorMessage={fieldConfig.errorMessage}
                       placeholder={fieldConfig.placeholder}
                       value={fieldConfig.value}
+                      maxLength={fieldConfig.maxLength}
+                    />
+                  </Col>
+                );
+              case "address":
+                return (
+                  <Col key={fieldConfig.fieldName} lg="12">
+                    <AddressInput
+                      label={fieldConfig.label}
+                      fieldName={fieldConfig.fieldName}
+                      errorMessage={fieldConfig.errorMessage}
+                      value={fieldConfig.value}
+                      placeholder={fieldConfig.placeholder}
+                      onChange={handleFieldChange}
+                    />
+                  </Col>
+                );
+              case "email":
+                return (
+                  <Col key={fieldConfig.fieldName} lg="6">
+                    <EmailInput
+                      label={fieldConfig.label}
+                      fieldName={fieldConfig.fieldName}
+                      errorMessage={fieldConfig.errorMessage}
+                      value={fieldConfig.value}
+                      placeholder={fieldConfig.placeholder}
+                      onChange={handleFieldChange}
                     />
                   </Col>
                 );
